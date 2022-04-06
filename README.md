@@ -22,9 +22,10 @@ Copy the links to each of the tarballs (.tgz files) and then install as normal v
 
 Since we're not changing the Shopify namespace and we're installing the updated packages from outside the NPM registry, we have to install each updated package individually.
 ```
-# e.g.
-npm i --save-dev https://github.com/kingandpartners/slate/releases/download/v1.0.1-beta.0/slate-sync-1.0.1-beta.0.tgz
-npm i --save-dev https://github.com/kingandpartners/slate/releases/download/v1.0.1-beta.0/slate-tools-1.0.1-beta.0.tgz
+npm i --save-dev [package url] [package url]
+
+ e.g.
+npm i --save-dev https://github.com/kingandpartners/slate/releases/download/v1.0.1/shopify-slate-sync-1.0.1.tgz https://github.com/kingandpartners/slate/releases/download/v1.0.1/shopify-slate-tools-1.0.1.tgz
 
 ...
 ```
