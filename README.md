@@ -12,48 +12,17 @@ To take advantage of file checksums, so only changed files are uploaded/download
 
 To avoid axios errors clogging the logs
 
-## Installation
-
-Releases will be accessible only from tarballs on the [release page](https://github.com/kingandpartners/slate/releases/)
-
-Go to the release page for the latest release and note the individual packages attached to the release.
-
-Copy the links to each of the tarballs (.tgz files) and then install as normal via URL.
-
-Since we're not changing the Shopify namespace and we're installing the updated packages from outside the NPM registry, we have to install each updated package individually.
-```
-npm i --save-dev [package url] [package url]
-
- e.g.
-npm i --save-dev https://github.com/kingandpartners/slate/releases/download/v1.0.1/shopify-slate-sync-1.0.1.tgz https://github.com/kingandpartners/slate/releases/download/v1.0.1/shopify-slate-tools-1.0.1.tgz
-
-...
-```
-
-The resulting package.json will look like
-```
-...
-
-  "devDependencies": {
-    "@shopify/slate-sync": "https://github.com/kingandpartners/slate/releases/download/v1.0.1-beta.0/slate-sync-1.0.1-beta.0.tgz",
-    "@shopify/slate-tools": "https://github.com/kingandpartners/slate/releases/download/v1.0.1-beta.0/slate-tools-1.0.1-beta.0.tgz",
-
-    ...
-```
-
 ## Usage Notes
 - Due to the way Themekit is calculating checksums, you'll note that certain files are always uploaded despite no obvious changes (e.g. `locales/en.default.json`)
   - This is because Shopify is minifying the JSON after upload, so the file on Shopify will have a different checksum than our repo version.
 
 ## Release creation
 
-### 0. Modify dependency versions as part of PR against develop
+### 0. Modify dependency versions as part of PR against master
 First, modify the `@shopify/slate-sync` dependency version within `slate-tools` to be that tarball url that will be generated as part of our release. This will take the form of `https://github.com/thecitizenry/slate/releases/download/v1.0.1/shopify-slate-sync-1.0.1.tgz` where the version number is the git tag / version we are about to release.
 
 > Explanation for above^: Since `@shopify/slate-sync` will only be referenced by its remote tarball within both `slate-tools`'s and our main Shopify codebase's package.json, the dependency graph within Node will not guarantee that our Shopify codebase's dependency is resolved first, which will result in `No matching version found for @shopify/slate-sync@1.0.1.` when attempting an npm install. This solves that issue by always referencing the tarball here, even through it won't exist until we actually cut the github release.
-### 1. Merge necessary PR's to `develop`
-
-### 2. Create a release PR from `develop` to `master` and merge
+### 1. Merge necessary PRs to `master`
 
 ### 3. Checkout and pull master
 
@@ -86,32 +55,7 @@ Everything up-to-date
 ```
 
 ### 5. Package the individual tarballs with `npm pack` (for any updated packages)
-Run npm pack for both the `slate-tools` and `slate-sync` packages.
-
-.eg.
-```
-$ pwd
-/Users/johnroyall/slate-mine
-$ cd packages/slate-sync
-$ npm pack
-npm notice
-npm notice 📦  @shopify/slate-sync@1.0.1-beta.1
-npm notice === Tarball Contents ===
-npm notice 5.3kB index.js
-npm notice 115B  slate-sync.schema.js
-npm notice 751B  package.json
-npm notice === Tarball Details ===
-npm notice name:          @shopify/slate-sync
-npm notice version:       1.0.1-beta.1
-npm notice filename:      shopify-slate-sync-1.0.1-beta.1.tgz
-npm notice package size:  2.2 kB
-npm notice unpacked size: 6.1 kB
-npm notice shasum:        9a8a7d5aca0304141fb1d0ab1039d3800618b763
-npm notice integrity:     sha512-gAt2HyJa7NQ6a[...]5m7THw6mMXzzg==
-npm notice total files:   3
-npm notice
-shopify-slate-sync-1.0.1-beta.1.tgz
-```
+Run `npm pack` for both the `slate-tools` and `slate-sync` packages.
 
 ### 6. Attach all the updated packages to the tag
 Don't forget to delete the tarballs once done.
@@ -119,7 +63,6 @@ Don't forget to delete the tarballs once done.
 ### More info
 See CONTRIBUTING.MD, but note that most of this is *not* followed
 
-## Dev Setup (tbd)
 
 # Legacy Info - Slate is Deprecated
 
